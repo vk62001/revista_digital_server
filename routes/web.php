@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\DB;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,5 +20,6 @@ Route::get('/', function () {
 
 Route::post('/test', function () {
     $data = "hola mundo";
-    return response()->json(['status'=>200,'data'=>$data]);
+    $users = DB::table('users')->get();
+    return response()->json(['status'=>200,'data'=>$users]);
 });
