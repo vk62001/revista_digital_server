@@ -17,18 +17,29 @@ class UserController extends Controller
     }
 
     function register(Request $req){
-     
+        //revisar si el correo ya existe
+        //usamos variable
+        //if("existe"){return json(200), 'data'=>"el correo ya existe"}
+        //else{
+        //registro
+        //}
+
+
 
         $name = $req->input('name');
         $email = $req->input('email');
         $password = Hash::make($req->input('password'));
 
-        DB::table('users')->insert([
+        $response = DB::table('users')->insert([
          'name' => $name,
          'email'=> $email,
          'password' => $password
         ]);
-
+        if($response){
+            return response()->json(['status'=>200,'data'=>true]);
+        }else{
+            return response()->json(['status'=>500, 'data'=>false]);
+        }
     }
 
     function login (Request $req){
