@@ -23,3 +23,7 @@ Route::post('/test', function () {
     $users = DB::table('users')->get();
     return response()->json(['status'=>200,'data'=>$users]);
 });
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
