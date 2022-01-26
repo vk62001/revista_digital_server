@@ -24,22 +24,31 @@ class UserController extends Controller
         //registro
         //}
 
+            $name = $req->input('name');
+            $email = $req->input('email');
+            $password = Hash::make($req->input('password'));
 
+       $validate = DB::table('users')->where('email',$email)->first();
+        if($validate ===null){
+            $response = DB::table('users')->insert([
+             'name' => $name,
+             'email'=> $email,
+             'password' => $password
+            ]);
+            $response = array(
+                "user" => true,
+                "email"=>false,
+            );
+            return response()->json(['status'=>200,'data'=>$response]);
 
-        $name = $req->input('name');
-        $email = $req->input('email');
-        $password = Hash::make($req->input('password'));
-
-        $response = DB::table('users')->insert([
-         'name' => $name,
-         'email'=> $email,
-         'password' => $password
-        ]);
-        if($response){
-            return response()->json(['status'=>200,'data'=>true]);
         }else{
-            return response()->json(['status'=>500, 'data'=>false]);
+            $response = array(
+                "user" => true,
+                "email"=> true,
+            );
+            return response()->json(['status'=>200,'data'=>$response]);
         }
+       
     }
 
     function login (Request $req){
