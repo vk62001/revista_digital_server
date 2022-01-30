@@ -7,6 +7,7 @@ use App\Models\User;
 use Redirect,Response,File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Query\Builder;
 
 class UserController extends Controller
 {
@@ -17,13 +18,13 @@ class UserController extends Controller
     }
 
     function register(Request $req){
-        //revisar si el correo ya existe
-        //usamos variable
-        //if("existe"){return json(200), 'data'=>"el correo ya existe"}
-        //else{
-        //registro
-        //}
+          
+        $req->validate([
+        'name' => 'required',
+        'email' => 'required',
+        'password' => 'required'
 
+        ]);
             $name = $req->input('name');
             $email = $req->input('email');
             $password = Hash::make($req->input('password'));
@@ -52,22 +53,36 @@ class UserController extends Controller
     }
 
     function login (Request $req){
-     
-        $email = $req->input('email');
+        
+       
+        /*$email = $req->input('email');
         $password = $req->input('password');
+ 
 
-        $user = DB::table('users')->where('email',$email)-first();
-      
+       $user= User::where('email',$req->email)->first();
 
-        if(!Hash::check($password, $user->password)){
-          echo "La contraseña o el correo son incorrectos";
+        if(!$user || !Hash::check($req->$password,$user->password));
+        {
+            return["error"=>"El correo o la contraseña no son correctos"];
+        }        
 
-        }
-        else{
+       return $user;*/
 
-           echo $user->email;
+       $email = $req->input('email');
+       $password = $req->input('password');
 
-        }
+       $user = DB::table('users')->where('email',$email)->first();
+     
+
+       if(!Hash::check($password, $user->password)){
+         echo "La contraseña o el correo son incorrectos";
+
+       }
+       else{
+
+          echo $user->email;
+
+       }
     }
     
     
