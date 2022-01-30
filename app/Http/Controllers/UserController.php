@@ -53,20 +53,7 @@ class UserController extends Controller
     }
 
     function login (Request $req){
-        
-       
-        /*$email = $req->input('email');
-        $password = $req->input('password');
- 
-
-       $user= User::where('email',$req->email)->first();
-
-        if(!$user || !Hash::check($req->$password,$user->password));
-        {
-            return["error"=>"El correo o la contraseña no son correctos"];
-        }        
-
-       return $user;*/
+  
 
        $email = $req->input('email');
        $password = $req->input('password');
@@ -80,7 +67,8 @@ class UserController extends Controller
        }
        else{
 
-          echo $user->email;
+          echo "Bienvenido! ". $user->name;
+          
 
        }
     }
