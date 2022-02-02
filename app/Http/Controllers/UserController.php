@@ -8,6 +8,7 @@ use Redirect,Response,File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -54,7 +55,7 @@ class UserController extends Controller
 
     function login (Request $req){
   
-
+        
        $email = $req->input('email');
        $password = $req->input('password');
 
@@ -68,10 +69,9 @@ class UserController extends Controller
        else{
 
           echo "Bienvenido! ". $user->name;
-          
-
        }
     }
     
-    
 }
+    
+
