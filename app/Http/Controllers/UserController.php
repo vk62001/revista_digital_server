@@ -54,23 +54,23 @@ class UserController extends Controller
 
     function login (Request $req){
   
+        
+        $req->validate([
+        'email' => 'required',
+        'password' => 'required'
 
-       $email = $req->input('email');
-       $password = $req->input('password');
+        ]);
+            $email = $req->input('email');
+            $password = Hash::make($req->input('password'));
+//        return response()->json(['status'=>200,'data'=>$email]);
 
-       $user = DB::table('users')->where('email',$email)->first();
-     
-
-       if(!Hash::check($password, $user->password)){
-         echo "La contraseña o el correo son incorrectos";
-
-       }
-       else{
-
-          echo "Bienvenido! ". $user->name;
-          
-
-       }
+        $user = DB::table('users')->where('email',$email)->first();
+        if(!Hash::check($password, $user->password)){
+            echo "La contraseña o el correo son incorrectos";
+        }
+        else{
+            echo "Bienvenido! ". $user->name;
+        }
     }
     
     
