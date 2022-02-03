@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -54,24 +55,38 @@ class UserController extends Controller
     }
 
     function login (Request $req){
-  
-        
-        $req->validate([
-        'email' => 'required',
-        'password' => 'required'
+       
+        $validator = Validator::make($req->all(),[
+          'email'=>'required|email',
+          'password'=>'required',
 
-        ]);
-            $email = $req->input('email');
-            $password = Hash::make($req->input('password'));
-//        return response()->json(['status'=>200,'data'=>$email]);
+        ]);;
 
-        $user = DB::table('users')->where('email',$email)->first();
-        if(!Hash::check($password, $user->password)){
-            echo "La contraseña o el correo son incorrectos";
-        }
-        else{
-            echo "Bienvenido! ". $user->name;
-        }
+       if($validator->fails()){
+
+         return response()->json([
+             'validation_errors'=>$validator->messages(), 
+ 
+         ]);
+
+       }else{
+             $user = User::where('email', $req->email)->first();
+
+             if (! $user || ! Hash::check($req->password, $user->password)) {
+                 return response()->json([
+                   'status'=>'401',
+                   'message'=>'Correo o contraseña incorrectos.',
+                 ]);
+           }else{
+               return response()->json([
+                  'status'=>202,
+                  'username'=>$user->name,
+                'message'=>'Has iniciado sesion',
+               ]);
+           }
+
+
+       }
     }
     
 }
