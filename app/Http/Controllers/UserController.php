@@ -63,29 +63,21 @@ class UserController extends Controller
         ]);;
 
        if($validator->fails()){
-
-         return response()->json([
-             'validation_errors'=>$validator->messages(), 
- 
-         ]);
-
+         return response()->json(['validation_errors'=>$validator->messages(),]);
        }else{
-             $user = User::where('email', $req->email)->first();
-
-             if (! $user || ! Hash::check($req->password, $user->password)) {
+            
+            $user = User::where('email', $req->email)->first();
+            if (!$user || !Hash::check($req->password,$user->password)) {
                  return response()->json([
                    'status'=>'401',
                    'message'=>'Correo o contraseña incorrectos.',
-                 ]);
-           }else{
+                     ]);
+            }else{
                return response()->json([
                   'status'=>202,
-                  'username'=>$user->name,
-                'message'=>'Has iniciado sesion',
+                  'username'=>$user->name
                ]);
-           }
-
-
+            }
        }
     }
     
