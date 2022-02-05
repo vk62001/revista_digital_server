@@ -13,14 +13,21 @@ use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
-    function index(){
-      
-        return view('singup');
+    /**
+     * Create a new AuthController instance
+     * @return void
+     */
 
-    }
+     public function __construct(){
+         $this->middleware('jwt',['except'=>['login','register']]);
+     }
 
-    function register(Request $req){
-          
+   public function register(){
+        $user = new User(request()->all());
+        $user->password = bcrypt($user->password);
+        $user->save();
+        /*
+        //Register  
         $req->validate([
         'name' => 'required',
         'email' => 'required',
@@ -50,12 +57,24 @@ class UserController extends Controller
                 "email"=> true,
             );
             return response()->json(['status'=>200,'data'=>$response]);
-        }
+        }*/
        
     }
-
+    /**
+     * Get a JWT via given credentials.
+     * 
+     * @return \Illuminate\Http\JsonResponse
+     */
     function login (Request $req){
-       
+        $credentials = request(['email','password']);
+
+        if(! $token = auth()->attempt($credentials)){
+            return response()->json(['error'=>'Unauthorized'],401);
+        }
+        return $this->respondWithToken($token);
+
+
+       /* 
         $validator = Validator::make($req->all(),[
           'email'=>'required|email',
           'password'=>'required',
@@ -78,8 +97,36 @@ class UserController extends Controller
                   'username'=>$user->name
                ]);
             }
-       }
+       }*/
     }
+
+    /**
+     * Get the token array structure.
+     * 
+     * @param string $token
+     * 
+     * @return \Illuminate\Http\JsonResponse
+     */
+
+     protected function respondWithToken($token){
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            //'expires_in' => auth()->factory()->getTTL() * 60
+            'expires_in' => auth()->factory()->getTTL() * 60
+        ]);
+     }
+     
+     /**
+      * Log the user out (invalidate the token).
+      *
+      *@return \Illuminate\Htpp\JsonResponse
+      */
+     public function logout(){
+         auth()->logout();
+
+         return response()->json(['message'=> 'Successfully logged out']);
+     }
     
 }
     
