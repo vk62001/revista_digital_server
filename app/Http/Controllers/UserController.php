@@ -82,7 +82,7 @@ class UserController extends Controller
            ],status:422);
           }
 
-          $token = JWTAuth::attempt($credentials);
+          $token = JWTAuth::attempt($credentials);   
 
           if($token){
               return response()->json([
