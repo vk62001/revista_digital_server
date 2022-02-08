@@ -70,31 +70,38 @@ class UserController extends Controller
           $credentials = $req->only('email', 'password');
 
           $validator = Validator::make($credentials,[
-             'email' => 'required|email',
-             'password' => 'required'
+             "email" => "required|email",
+             "password" => "required"
           ]);
 
           if($validator->fails()){
            return response()->json([
-              'success' => 'false',
-              'message' => 'Wrong Validation',
-              'errors' => $validator->errors()
-           ],status:422);
+            "status"=>422,
+            "success" => false,
+            "message" => "Wrong Validation",
+            "errors" => $validator->errors()
+           ]);
           }
 
           $token = JWTAuth::attempt($credentials);   
 
           if($token){
+            $user = User::where("email", $credentials['email'])->get()->first();
+            $userArray = array(
+                "email"=>$user['email'],
+                "username"=>$user['name'],
+                "token"=>$token
+            );
               return response()->json([
-                  'success' => true,
-                  'token' => $token,
-                  'user' => User::where('email', $credentials['email'])->get()->first()
-              ], status:200);
+                "status"=>200,
+                "success" => true,
+                "user" => $userArray
+              ]);
           }else{
               return response()->json([
-               'succes' => false,
-               'message' => 'Correo o Contraseña incorrectos',
-               'errors' => $validator->errors()
+               "success" => false,
+               "message" => "Correo o Contraseña incorrectos",
+               "errors" => $validator->errors()
               ]);
           }
        /* 
