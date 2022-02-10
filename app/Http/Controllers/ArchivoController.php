@@ -9,7 +9,12 @@ class ArchivoController extends Controller
     function upload(Request $req){
 
         $result = $req->file('file')->store('Archivos');
+        $resultado = $req->file('file');
         return ["result"=>$result];
+        /*return response()->json([
+               "status"=>200,
+               "file" => $resultado
+              ]);*/
     }
 
     function download(Request $req){
