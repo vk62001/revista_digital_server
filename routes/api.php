@@ -18,7 +18,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 //Route::post('/login',[App\Http\Controllers\UserController::class,'login'])->name('login');//Login
 
-Route::post('/upload',[App\Http\Controllers\PdfController::class,'Upload'])->name('Upload');//Subir pdf 
+Route::post('/upload',[App\Http\Controllers\ArchivoController::class,'upload']);//Subir pdf 
+
 
 Route::group([
     'prefix' => 'auth'
