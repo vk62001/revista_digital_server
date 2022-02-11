@@ -3,14 +3,40 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facade\File;
 use Illuminate\Http\Request;
+use App\Models\Titulo;
+
 
 class ArchivoController extends Controller
 {
     function upload(Request $req){
+        if($req->hasfile("file")){
+            $file = $req->file("file");
+            $nombre = $req->file->getClientOriginalName();
+            
+            $ruta = public_path("revista/".$nombre);
 
-        $result = $req->file('file')->store('Archivos');
+            $titulo = new Titulo();
+            $titulo->name = "";
+            $titulo->file_path = "";
+            $titulo->save();
+            
+
+            if($file->guessExtension()=="pdf"){
+                copy($file, $ruta);
+            $titulo = new Titulo();
+            $titulo->name = $nombre;
+            $titulo->file_path = $ruta;
+            $titulo->save();
+            }else{
+                dd("NO ES UN PDF");
+            }
+        }
+
+
+        /*$result = $req->file('file')->store('Archivos');
         $resultado = $req->file('file');
-        return ["result"=>$result];
+        return ["result"=>$result];*/
+
         /*return response()->json([
                "status"=>200,
                "file" => $resultado
