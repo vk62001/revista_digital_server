@@ -23,21 +23,23 @@ class UserController extends Controller
          $this->middleware('jwt',['except'=>['login','register']]);
      }
 
-   public function register(){
-        $user = new User(request()->all());
-        $user->password = bcrypt($user->password);
-        $user->save();
-        /*
+   public function register(Request $req){
+
         //Register  
+
         $req->validate([
         'name' => 'required',
         'email' => 'required',
         'password' => 'required'
 
         ]);
-            $name = $req->input('name');
-            $email = $req->input('email');
-            $password = Hash::make($req->input('password'));
+
+        //$credentials = $req->only('name','email', 'password');
+        
+        $name = $req->input('name');
+        $email = $req->input('email');
+        $password = Hash::make($req->input('password'));
+
 
        $validate = DB::table('users')->where('email',$email)->first();
         if($validate ===null){
@@ -58,7 +60,7 @@ class UserController extends Controller
                 "email"=> true,
             );
             return response()->json(['status'=>200,'data'=>$response]);
-        }*/
+        }
        
     }
     /**

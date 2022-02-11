@@ -12,23 +12,31 @@ class ArchivoController extends Controller
         if($req->hasfile("file")){
             $file = $req->file("file");
             $nombre = $req->file->getClientOriginalName();
-            
-            $ruta = public_path("revista/".$nombre);
 
-            $titulo = new Titulo();
-            $titulo->name = "";
-            $titulo->file_path = "";
-            $titulo->save();
+            $ruta = public_path("Revista/".$nombre);
+
+            ///var/www/html/revista_digital_server/public/
+            //$titulo = new Titulo();
+            //$titulo->name = "";
+            //$titulo->file_path = "";
+            //$titulo->save();
             
 
             if($file->guessExtension()=="pdf"){
                 copy($file, $ruta);
-            $titulo = new Titulo();
-            $titulo->name = $nombre;
-            $titulo->file_path = $ruta;
-            $titulo->save();
+                $titulo = new Titulo();
+                $titulo->name = $nombre;
+                $titulo->file_path = $ruta;
+                $titulo->save();
+                return response()->json([
+                   "status"=>200,
+                   "file" => true
+                ]);
             }else{
-                dd("NO ES UN PDF");
+                return response()->json([
+                    "status"=>402,
+                    "file" => false
+                ]);
             }
         }
 
@@ -37,10 +45,7 @@ class ArchivoController extends Controller
         $resultado = $req->file('file');
         return ["result"=>$result];*/
 
-        /*return response()->json([
-               "status"=>200,
-               "file" => $resultado
-              ]);*/
+       
     }
 
     function download(Request $req){
