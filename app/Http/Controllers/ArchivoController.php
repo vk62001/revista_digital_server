@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facade\File;
 use Illuminate\Http\Request;
 use App\Models\Titulo;
+use Illuminate\Support\Facades\DB;
 
 
 class ArchivoController extends Controller
@@ -39,13 +40,52 @@ class ArchivoController extends Controller
                 ]);
             }
         }
-
-
         /*$result = $req->file('file')->store('Archivos');
         $resultado = $req->file('file');
         return ["result"=>$result];*/
 
        
+    }
+
+    public function list(){
+        
+        $titulos = DB::table('titulos')->get();
+
+           return $titulos;
+
+        //Consulta solo los campos name y file_path
+        //$titulos = DB::table('titulos')->select('name','file_path')->get();
+        //return $titulos;
+    }
+
+    public function destroy($id){
+       
+        $file= Titulo::find($id);
+
+        if(unlink($file->file_path)){
+            $file->delete();
+            return '{"msg":"Revista Eliminada"}';
+        }else{
+            return '{"msg":"Revista no encontrada"}';
+        }
+    }
+
+    public function update(Request $req){
+
+        $validatedData = $req->validate([
+            'id' => 'required',
+           'name' => 'required|string'
+        ]);
+        $titulo = Titulo::findOrFail( $req->input('id'));
+        $titulo->name = $req->input('name');
+        $titulo->save();
+        
+        
+    
+    
+        $response['message'] = "Actualizado exitosamente";
+        $response['success'] = true;
+      return response()->json($response);
     }
 
     function download(Request $req){

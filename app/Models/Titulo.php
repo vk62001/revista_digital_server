@@ -10,6 +10,7 @@ class Titulo extends Model
     use HasFactory;
 
     protected $fillable = [
+        'id',
         'name',
         'file_path'
 

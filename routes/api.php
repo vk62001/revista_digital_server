@@ -20,7 +20,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/upload',[App\Http\Controllers\ArchivoController::class,'upload']);//Subir pdf 
 
+Route::get('/list',[App\Http\Controllers\ArchivoController::class,'list']); //Listar datos
 
+Route::post('/update',[App\Http\Controllers\ArchivoController::class,'update']);//Actualizar datos
+
+Route::delete('/delete/{id}',[App\Http\Controllers\ArchivoController::class,'destroy']);
 Route::group([
     'prefix' => 'auth'
 ], function (){
