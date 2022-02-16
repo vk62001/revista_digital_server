@@ -88,12 +88,14 @@ class UserController extends Controller
           $token = JWTAuth::attempt($credentials);   
 
           if($token){
+            dd($token);
             $user = User::where("email", $credentials['email'])->get()->first();
             $userArray = array(
                 "email"=>$user['email'],
                 "username"=>$user['name'],
                 "token"=>$token
             );
+            
               return response()->json([
                 "status"=>200,
                 "success" => true,
