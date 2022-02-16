@@ -52,6 +52,7 @@ class UserController extends Controller
                 "user" => true,
                 "email"=>false,
             );
+            //agregar token al retorno
             return response()->json(['status'=>200,'data'=>$response]);
 
         }else{
@@ -92,7 +93,8 @@ class UserController extends Controller
             $userArray = array(
                 "email"=>$user['email'],
                 "username"=>$user['name'],
-                "token"=>$token
+                "token"=>$token,
+                "admin" =>$user['administrador']
             );
               return response()->json([
                 "status"=>200,

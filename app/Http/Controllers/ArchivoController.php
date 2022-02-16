@@ -12,23 +12,22 @@ class ArchivoController extends Controller
     function upload(Request $req){
         if($req->hasfile("file")){
             $file = $req->file("file");
-            $nombre = $req->file->getClientOriginalName();
 
-            $ruta = public_path("Revista/".$nombre);
+            $nameFile = $req->file->getClientOriginalName();
+            $nombre = $req->input('titulo');
+            $ruta = public_path("Revista/".$nameFile);
 
-            ///var/www/html/revista_digital_server/public/
-            //$titulo = new Titulo();
-            //$titulo->name = "";
-            //$titulo->file_path = "";
-            //$titulo->save();
-            
 
             if($file->guessExtension()=="pdf"){
+
+                //verificar si la carpeta no existe, entonces crearla
+
                 copy($file, $ruta);
                 $titulo = new Titulo();
                 $titulo->name = $nombre;
                 $titulo->file_path = $ruta;
                 $titulo->save();
+                //print_r($titulo);
                 return response()->json([
                    "status"=>200,
                    "file" => true
@@ -40,11 +39,6 @@ class ArchivoController extends Controller
                 ]);
             }
         }
-        /*$result = $req->file('file')->store('Archivos');
-        $resultado = $req->file('file');
-        return ["result"=>$result];*/
-
-       
     }
 
     public function list(){
