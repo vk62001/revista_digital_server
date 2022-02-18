@@ -54,14 +54,23 @@ class ArchivoController extends Controller
 
     public function destroy($id){
        
-        $file= Titulo::find($id);
+        //Titulo::destroy($id);
+        //return '{"msg":"Revista Eliminada"}';
+
+        DB::table('titulos')->delete($id);
+
+        return '{"msg":"Revista Eliminada"}';
+
+
+       //Eliminar archivo de revista
+        /**$file= Titulo::find($id);
 
         if(unlink($file->file_path)){
             $file->delete();
             return '{"msg":"Revista Eliminada"}';
         }else{
             return '{"msg":"Revista no encontrada"}';
-        }
+        }*/
     }
 
     public function update(Request $req){
