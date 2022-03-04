@@ -10,35 +10,39 @@ use Illuminate\Support\Facades\DB;
 class ArchivoController extends Controller
 {
     function upload(Request $req){
+
         if($req->hasfile("file")){
             $file = $req->file("file");
-
             $nameFile = $req->file->getClientOriginalName();
             $nombre = $req->input('titulo');
             $ruta = public_path("Revista/".$nameFile);
-
-
             if($file->guessExtension()=="pdf"){
-
-                //verificar si la carpeta no existe, entonces crearla
-
                 copy($file, $ruta);
-                $titulo = new Titulo();
-                $titulo->name = $nombre;
-                $titulo->file_path = $ruta;
-                $titulo->save();
-                //print_r($titulo);
-                return response()->json([
-                   "status"=>200,
-                   "file" => true
-                ]);
-            }else{
-                return response()->json([
-                    "status"=>402,
-                    "file" => false
-                ]);
             }
         }
+    
+        if($req->hasfile("image")){
+        $file2 = $req->file('image');     
+        $imagename = $file2->getClientOriginalName();
+        $extension = $file2->getClientOriginalExtension();    
+            $ruta2 = public_path("Revista/". $imagename);
+        copy($file2, $ruta2);
+        }
+    
+    
+      $titulo = new Titulo();
+      $titulo->name = $nombre;
+      $titulo->file_path = $ruta;
+      $titulo->image_path = $ruta2;
+      $titulo->description = $req->input('description');
+      $titulo->save();
+    
+      return response()->json([
+         "status"=>200,
+         "file" => true
+      ]);
+    
+    
     }
 
     public function list(){
