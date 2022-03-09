@@ -10,9 +10,7 @@ use Illuminate\Queue\SerializesModels;
 class ContactanosMailable extends Mailable
 {
     use Queueable, SerializesModels;
-
-    public $req;
-    public $name;
+    public $nombre;
     public $correo;
     public $mensaje;
 
@@ -21,11 +19,11 @@ class ContactanosMailable extends Mailable
      *
      * @return void
      */
-    public function __construct(Request $req)
+    public function __construct($data)
     {
-       $this->$name = $req->input('name');
-       $this->$correo = $req->input('correo');
-        $this->$mensaje = $req->input('mensaje');
+        $this->nombre = $data->nombre;
+        $this->correo = $data->correo;
+        $this->mensaje = $data->mensaje;
     }
 
     /**

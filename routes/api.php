@@ -31,7 +31,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/send',[App\Http\Controllers\MessagesController::class,'sendEmail']);//Enviar Correo
 
-
+Route::post('/like',[App\Http\Controllers\LikeController::class,'uploadlike']);
 
 
 

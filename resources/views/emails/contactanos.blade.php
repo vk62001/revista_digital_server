@@ -7,7 +7,7 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Nombre:{{$name}}</h1>
+    <h1>Nombre:{{$nombre}}</h1>
     <p>Correo:{{$correo}}</p>
     <p>Mensaje:{{$mensaje}}</p>
 </body>
