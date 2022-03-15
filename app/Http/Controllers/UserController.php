@@ -14,15 +14,27 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserController extends Controller
 {
+
+
+    public function listUsers(){
+          
+      $count = User::count();
+
+          return $count;
+
+
+
+          }
     /**
      * Create a new AuthController instance
      * @return void
      */
 
-     public function __construct(){
-         $this->middleware('jwt',['except'=>['login','register']]);
-     }
-
+     //+public function __construct(){
+       //  $this->middleware('jwt',['except'=>['login','register']]);
+     //}
+     
+    
    public function register(Request $req){
 
         //Register  

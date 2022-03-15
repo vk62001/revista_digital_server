@@ -29,9 +29,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 //Route::post('/login',[App\Http\Controllers\UserController::class,'login'])->name('login');//Login
 
+Route::get('/vistas',[App\Http\Controllers\UserController::class,'listUsers']);
+
 Route::post('/send',[App\Http\Controllers\MessagesController::class,'sendEmail']);//Enviar Correo
 
-Route::post('/like',[App\Http\Controllers\LikeController::class,'uploadlike']);
+Route::post('/like',[App\Http\Controllers\LikeController::class,'uploadlike']);//Subir Likes
+
+Route::get('/listlike',[App\Http\Controllers\LikeController::class,'likelist']);//Lista likes
 
 
 

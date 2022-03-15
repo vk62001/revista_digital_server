@@ -18,4 +18,11 @@ class LikeController extends Controller
         'id' => true
         ]);
     }
+
+    public function likelist(){
+
+        $count = like::count();
+
+        return $count;
+    }
 }
