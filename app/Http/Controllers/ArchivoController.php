@@ -11,6 +11,8 @@ class ArchivoController extends Controller
 {
     function upload(Request $req){
 
+       
+
         if($req->hasfile("file")){
             $file = $req->file("file");
             $nameFile = $req->file->getClientOriginalName();
